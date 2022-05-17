@@ -1,0 +1,262 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz</title>
+<style>
+    * {
+       box-sizing: border-box;
+       background-color: blue;
+       color: aliceblue;
+
+   }
+   body{
+       text-align: center;
+       padding: 10vw;
+   }
+   label{
+       font-size: 2vw;
+   }
+   #username{
+       border:0.2vw solid aliceblue ;
+       height: 2vw;
+       width: 15vw;
+       border-radius: 2px;
+       font-size: 1.25vw;
+       padding-left: 1vw;
+   }
+   #username:focus{
+       background-color: blue;
+       height: 2vw;
+       width: 15vw;
+       border:  0.2vw solid aliceblue;
+       box-shadow: inset none;
+       
+   }
+   #startQuiz{
+    height: 4vw;
+    width: 10vw;
+    color: aliceblue;
+    font-size: 2vw;
+    border:  0.2vw solid aliceblue;
+    border-radius: 2px;
+   }
+   #startQuiz:hover{
+       background-color: rgba(61, 228, 240, 0.443);
+       cursor: pointer;
+   }
+   #instructions,li,li{
+       font-size: 1.25vw;
+       background-color: rgb(13, 13, 164);
+       padding: 2vw;
+       border: 1vm solid rgb(13, 13, 164);
+       border-radius: 6px;
+   }
+   #Question{
+        font-size: 2.5vw;
+   }
+   #timer{
+    font-size: 1.5vw;
+   }
+   button:hover{
+       background-color: rgba(61, 228, 240, 0.443);
+       cursor: pointer;
+   }
+   button{
+    height: 4vw;
+    width: 12vw;
+    color: aliceblue;
+    font-size: 1vw;
+    border:  0.2vw solid aliceblue;
+    border-radius: 2px;
+    margin: 2vw;
+   }
+   #userscore{
+       font-size: 3vw;
+   }
+   button:focus{
+       background-color: rgba(61, 228, 240, 0.443);
+       cursor: pointer;
+   }
+
+</style>
+</head>
+<body>
+    <div>
+        <form id = "userdetails">
+            <label for = 'username'>Enter your Name : </label>
+            <input type = 'text' id = 'username'><br><br>
+            <input type = 'button' id = 'StartQuiz' value="StartQuiz"><br><br>
+               <div id = 'instructions'>Instructions
+                 <li>
+                    This Quiz contains three questions related to javascript ,Each carries one mark.
+                 </li>
+                 <li>
+                    Each Question has a timelimit,You cannot go to previous question once you go next.
+                 </li>
+                </div>
+            
+        </form>
+        <h2 id = 'greetuser'></h2>
+    </div>
+    <div id = 'Quiz'>
+        <div id = 'question'></div>
+        <div id = 'timer' ></div>
+        <div id = 'options'>
+            <button  id = 'option1' ></button>
+            <button  id = 'option2'></button>
+            <button  id = 'option3'></button>
+
+        </div>
+        <br>
+        <button id = 'NextQuestion'></button>
+        
+    </div>
+    <div id = 'userscore'></div>
+    <script type="text/javascript">
+        document.querySelector("#options").style.visibility = 'hidden'
+        document.querySelector("#NextQuestion").style.visibility = 'hidden'
+        document.getElementById('StartQuiz').onclick = function(){
+            document.querySelector("#options").style.visibility = 'visible'
+            document.querySelector("#NextQuestion").style.visibility = 'visible'
+            const username = document.getElementById('username').value;
+            document.getElementById('greetuser').innerHTML =' Hello ' + username + " start attempting Quiz Now !!";
+            document.getElementById('userdetails').innerHTML = "";
+            let Questions = [
+                {
+                    question : "Who invented JavaScript?",
+                
+                    Options:{ 
+                        a: "Douglas Crockford",
+                        b: "Sheryl Sandberg",
+                        c: "Brendan Eich"
+                    },
+                    correctAnswer : "Brendan Eich"
+                },
+                {
+                    question: "Which one of these is a JavaScript package manager?",
+                    Options:{
+                        a: "Node.js",
+                        b: "TypeScript",
+                        c: "npm"
+
+                    },
+                    correctAnswer: "Node.js"
+                },
+                {
+                    question : "Which tool can you use to ensure code quality?",
+                    Options: {
+                        a: "jQuery",
+                        b: "RequireJS",
+                        c: "ESLint"
+                    },
+                    correctAnswer: "ESLint"
+                }
+                
+                
+                
+            ]
+            let questionfill = document.getElementById('question');
+            let option1fill = document.getElementById('option1');
+            let option2fill = document.getElementById('option2');
+            let option3fill = document.getElementById('option3');
+            let nextbtn = document.getElementById('NextQuestion');
+            var Questionweb = [];
+            var score = 0
+            var userchoice = [];
+            var actualanswers = [];
+            
+            function writingquestion(){
+                
+                var notsame = [1];
+                let x = Math.random();
+                x = x * Questions.length;
+                x = Math.floor(x);
+                questionfill.innerHTML = Questions[x].question;
+                var optionsbuttons = [option1fill,option2fill,option3fill] ;
+                option1val = Questions[x].Options.a;
+                option2val = Questions[x].Options.b;
+                option3val = Questions[x].Options.c;
+                var optionsvalues =[option1val,option2val,option3val];
+                for(var y =0; y<optionsbuttons.length;y++){
+                       var z = Math.random();
+                       z = z* optionsvalues.length;
+                       z = Math.floor(z);
+                       optionsbuttons[y].innerHTML = optionsvalues[z] ;
+                    
+                       optionsvalues.splice(z,1);}
+                nextbtn.innerHTML = "Next Question";
+                
+                
+                if (Questions.length == 1){
+                nextbtn.innerHTML = "Submit Quiz";
+                }
+                Quesionweb = Questions.splice(x,1)
+                console.log(Quesionweb[0].correctAnswer)
+                
+                function saveanswer(choosen,answer){
+                      if(notsame.length == 1){
+                          userchoice.push(choosen);
+                          actualanswers.push(answer);
+                          notsame.pop();
+                          console.log(notsame)
+                      }
+                      else{
+                          userchoice.pop();
+                          userchoice.push(choosen)
+                      }
+                    console.log(userchoice)
+                    console.log(actualanswers)
+
+                }
+                optionsbuttons[0].onclick = function () {saveanswer(optionsbuttons[0].innerHTML,Quesionweb[0].correctAnswer)};
+                
+                optionsbuttons[1].onclick = function () {saveanswer(optionsbuttons[1].innerHTML,Quesionweb[0].correctAnswer)};
+        
+                optionsbuttons[2].onclick = function () {saveanswer(optionsbuttons[2].innerHTML,Quesionweb[0].correctAnswer)};
+                
+                setTimeout(function() {timer(0,59)},1000);
+                function timer(k,i){
+                    
+                    if(k>0 || i>0){
+                        document.getElementById('timer').innerHTML ="Time Left :- "+ k + ":"+ i
+                    if(i==0){
+                        i = 60;
+                        k = k-1;}
+                    nextbtn.onclick = function(){return k = 0,i = 0;}
+                    setTimeout(function() {timer(k,i - 1)},1000);}
+                    if(k == 0&&i ==0){
+                        gonext();
+                    }
+                }
+
+            }
+            
+            function gonext(){
+                if(Questions.length>0){
+                    writingquestion();
+                    document.getElementById('greetuser').innerHTML = "";
+                    }
+                    
+               else
+               {
+                for(var j= 0;j<actualanswers.length;j++){
+                if(userchoice[j] == actualanswers[j]){
+                   score = score + 1;
+                }}
+                document.getElementById('Quiz').innerHTML = ""
+                document.getElementById('userscore').innerHTML = "Your Final score is " + score + " out of 3"
+            }
+                
+            }
+            nextbtn.addEventListener('click',gonext);
+            writingquestion();
+
+
+
+        }
+
+    </script>
+</body>
+</html>
